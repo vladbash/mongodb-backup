@@ -512,13 +512,14 @@ function wrapper(my) {
     }
   }
 
-  require('mongodb').MongoClient.connect(my.uri, my.options, function(err, db) {
+  require('mongodb').MongoClient.connect(my.uri, my.options, function(err, client) {
 
     logger('db open');
     if (err) {
       return callback(err);
     }
 
+    var db = client.db(my.dbName);
     var root = my.tar === null ? my.root : my.dir;
     makeDir(root, function(err, name) {
 
@@ -614,6 +615,7 @@ function backup(options) {
   var my = {
     dir: path.join(__dirname, 'dump', path.sep),
     uri: String(opt.uri),
+    dbName: String(opt.dbName),
     root: path.resolve(String(opt.root || '')) + path.sep,
     stream: opt.stream || null,
     parser: opt.parser || 'bson',
