@@ -536,7 +536,7 @@ function wrapper(my) {
             function(err) {
 
               logger('db close');
-              db.close();
+              client.close();
               if (err) {
                 return callback(err);
               }
